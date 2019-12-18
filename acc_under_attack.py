@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-import argparse
+import argparse, os
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
@@ -12,6 +12,10 @@ import torchvision.transforms as transforms
 from models.vgg import VGG
 from attacker.pgd import Linf_PGD, L2_PGD
 from attacker.cw import cw
+
+
+os.environ['CUDA_VISIBLE_DEVICES'] = '1'
+
 # arguments
 parser = argparse.ArgumentParser(description='Bayesian Inference')
 parser.add_argument('--model', type=str, required=True)
@@ -22,6 +26,8 @@ parser.add_argument('--n_ensemble', type=str, required=True)
 parser.add_argument('--steps', type=int, required=True)
 parser.add_argument('--max_norm', type=str, required=True)
 parser.add_argument('--attack', type=str, default='Linf')
+parser.add_argument('--batch_size', type=int, default=100)
+
 
 opt = parser.parse_args()
 
@@ -46,8 +52,8 @@ if opt.data == 'cifar10':
     transform_test = transforms.Compose([
         transforms.ToTensor(),
     ])
-    testset = torchvision.datasets.CIFAR10(root='/home/luinx/data/cifar10-py', train=False, download=True, transform=transform_test)
-    testloader = torch.utils.data.DataLoader(testset, batch_size=opt.batch_size, shuffle=True, num_workers=2)
+    testset = torchvision.datasets.CIFAR10(root=opt.root, train=False, download=True, transform=transform_test)
+    testloader = torch.utils.data.DataLoader(dataset=testset, batch_size=opt.batch_size, shuffle=False, num_workers=2)
 elif opt.data == 'stl10':
     nclass = 10
     img_width = 96
