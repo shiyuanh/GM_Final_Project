@@ -1,6 +1,6 @@
-# BayesianDefense
+# GM Final Project
+Adversarial defense through adversarial training and Bayesian learning
 
-This is the official repository for paper [*Adv-BNN: Improved Adversarial Defense through Robust Bayesian Neural Network*]()
 
 ## Data
 + CIFAR10
@@ -24,3 +24,5 @@ Please follow the google drive [link](https://drive.google.com/drive/folders/1uA
 Run `bash train_{method}.sh` to run different adversarial attack methods. Hyperparameters are offered in the scripts. Modify the cifar10 root in the scripts before you run them. For example, run `bash train_adv_sgld.sh` to run adv. training with SGLD.
 
 
+## Reference
+[*Adv-BNN: Improved Adversarial Defense through Robust Bayesian Neural Network*]
