@@ -1,8 +1,0 @@
-2019-12-18 01:36:34: - lr: 0.01
-2019-12-18 01:36:34: - data: cifar10
-2019-12-18 01:36:34: - model: vgg
-2019-12-18 01:36:34: - root: /dvmm-filer2/datasets/CIFAR/
-2019-12-18 01:36:34: - model_out: ./checkpoint/cifar10_vgg_rse.pth
-2019-12-18 01:36:34: - noise_init: 0.2
-2019-12-18 01:36:34: - noise_inner: 0.1
-2019-12-18 01:36:34: - resume: False
