@@ -8,8 +8,6 @@ Adversarial defense through adversarial training and Bayesian learning
 ## Network
 + VGG16
 
-## Checkpoints
-Please follow the google drive [link](https://drive.google.com/drive/folders/1uAP6q-fSADhlkx-YNBipPzv4KCvC_3_J?usp=sharing)
 
 ## Defense methods
 + `Plain`: No defense
