@@ -14,7 +14,7 @@ from attacker.pgd import Linf_PGD, L2_PGD
 from attacker.cw import cw
 
 
-os.environ['CUDA_VISIBLE_DEVICES'] = '1'
+os.environ['CUDA_VISIBLE_DEVICES'] = '3'
 
 # arguments
 parser = argparse.ArgumentParser(description='Bayesian Inference')
@@ -26,7 +26,9 @@ parser.add_argument('--n_ensemble', type=str, required=True)
 parser.add_argument('--steps', type=int, required=True)
 parser.add_argument('--max_norm', type=str, required=True)
 parser.add_argument('--attack', type=str, default='Linf')
-parser.add_argument('--batch_size', type=int, default=100)
+parser.add_argument('--batch_size', type=int, default=128)
+parser.add_argument('--model_test', type=str)
+
 
 
 opt = parser.parse_args()
@@ -87,7 +89,6 @@ if opt.model == 'vgg':
     if opt.defense in ('plain', 'adv'):
         from models.vgg import VGG
         net = nn.DataParallel(VGG('VGG16', nclass, img_width=img_width), device_ids=range(1))
-        net.load_state_dict(torch.load(f'./checkpoint/{opt.data}_{opt.model}_{opt.defense}.pth'))
     elif opt.defense in ('vi', 'adv_vi'):
         from models.vgg_vi import VGG
         net = nn.DataParallel(VGG(1.0, 1.0, 1.0, 'VGG16', nclass, img_width=img_width), device_ids=range(1))
@@ -116,7 +117,13 @@ elif opt.model == 'aaron':
         net = nn.DataParallel(Aaron(nclass, 0.2, 0.1), device_ids=range(1))
 else:
     raise ValueError('invalid opt.model')
-net.load_state_dict(torch.load(f'./checkpoint/{opt.data}_{opt.model}_{opt.defense}.pth'))
+    
+ckpt=torch.load(opt.model_test)
+if 'state_dict' in ckpt.keys():
+    net.load_state_dict(ckpt['state_dict'])
+else:
+    net.load_state_dict(ckpt)
+    
 net.cuda()
 net.eval() # must set to evaluation mode
 loss_f = nn.CrossEntropyLoss()
